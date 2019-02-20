@@ -14,20 +14,41 @@ namespace GameStore
         public Store()
         {
             showcase.Add(new Game("Daddy simulator", 15f, "How to dad", "real life"));
-            showcase.Add(new Game("Half Life", 1000000f, "Best Game Ever", "Sci-Fi"));
+            showcase.Add(new Game("Half Life", 1000f, "Best Game Ever", "Sci-Fi"));
             showcase.Add(new Game("Hat in Time", 20f, "Super Cute", "3D"));
         }
 
-        public void AddGame(Game game)
+        public bool IsValidGame(int n)
         {
+            if (n < showcase.Count && n >= 0)
+                return true;
+            else
+                return false;
+        }
+        public void PrintShowcase()
+        {
+            foreach (Game g in showcase)
+            {
+                Console.WriteLine("\t [" + showcase.IndexOf(g) + "]" + g.name + "," + g.price);
+            }
+        }
+
+        public void AddGame(Game game)
+        {/*
             if (showcase.Count < maxGames)
-                showcase.Add(game);
+                showcase.Add(game);*/
+            showcase.Add(game);
         }
 
         public void RemoveGame(Game game)
         {
             if (showcase.Contains(game))
                 showcase.Remove(game);
+        }
+
+        public void Sell(int game, User user)
+        {
+            Sell(showcase[game], user);
         }
 
         public void Sell(Game game, User user)
@@ -44,7 +65,7 @@ namespace GameStore
     }
     class User
     {
-        public float wallet;
+        public float wallet = 100f;
         public List<Game> library = new List<Game>();
 
         public User(float walletFunds)
