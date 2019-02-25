@@ -16,6 +16,8 @@ namespace GameStore
             showcase.Add(new Game("Daddy simulator", 15f, "How to dad", "real life"));
             showcase.Add(new Game("Half Life", 1000f, "Best Game Ever", "Sci-Fi"));
             showcase.Add(new Game("Hat in Time", 20f, "Super Cute", "3D"));
+            showcase.Add(new Game("Borderlands", 30f, "Hardcore", "FPS"));
+            showcase.Add(new Game("Borderlands2", 40f, "Hardcore", "FPS"));
         }
 
         public bool IsValidGame(int n)
@@ -38,6 +40,16 @@ namespace GameStore
             if (showcase.Count < maxGames)
                 showcase.Add(game);*/
             showcase.Add(game);
+        }
+
+        public void RemoveGameFunc(int game, User user)
+        {
+            RemoveGameFunc(showcase[game], user);
+        }
+
+        public void RemoveGameFunc(Game game, User user)
+        {
+            RemoveGame(game);
         }
 
         public void RemoveGame(Game game)

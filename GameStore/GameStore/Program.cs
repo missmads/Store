@@ -19,7 +19,7 @@ namespace GameStore
             {
                 store.PrintShowcase();
                 Console.WriteLine("How may i help you?");
-                Console.WriteLine("Would you like to buy/add/quit?:");
+                Console.WriteLine("Would you like to buy/add/remove/quit?:");
                 string input = Console.ReadLine();
                 switch (input)
                 {
@@ -36,6 +36,7 @@ namespace GameStore
                             Console.WriteLine("Invalid Game!");
                         }
                         break;
+
                     case "add":
                         Console.WriteLine(" What is the Name of the Game?");
                         string name = Console.ReadLine();
@@ -48,9 +49,25 @@ namespace GameStore
                         string genre = Console.ReadLine();
                         store.AddGame(new Game(name, floatprice, description, genre));
                         break;
+
+                    case "remove":
+                        Console.WriteLine("Which Game");
+                        string removeinput = Console.ReadLine();
+                        int gameR = int.Parse(removeinput);
+                        if (store.IsValidGame(gameR))
+                        {
+                            store.RemoveGameFunc(gameR, user);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid Game!");
+                        }
+                        break;
+
                     case "quit":
                         Console.WriteLine("Goodbye");
                         return;
+
                     default:
                         Console.WriteLine("Invalid command!");
                         break;
