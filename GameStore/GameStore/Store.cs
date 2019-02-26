@@ -8,16 +8,22 @@ namespace GameStore
 {
     class Store
     {
-        int maxGames = 4;
+        int maxGames = 5;
+        int maxDLC = 5;
         List<Game> showcase = new List<Game>();
+        List<DLC> DLCshowcase = new List<DLC>();
 
         public Store()
         {
-            showcase.Add(new Game("Daddy simulator", 15f, "How to dad", "real life"));
-            showcase.Add(new Game("Half Life", 1000f, "Best Game Ever", "Sci-Fi"));
+            showcase.Add(new Game("Daddy simulator", 10f, "How to dad", "real life"));
+            showcase.Add(new Game("Half Life", 100f, "Best Game Ever", "Sci-Fi"));
             showcase.Add(new Game("Hat in Time", 20f, "Super Cute", "3D"));
-            showcase.Add(new Game("Borderlands", 30f, "Hardcore", "FPS"));
+            showcase.Add(new Game("Borderlands", 40f, "Hardcore", "FPS"));
             showcase.Add(new Game("Borderlands2", 40f, "Hardcore", "FPS"));
+            DLCshowcase.Add(new DLC("Borderlands-CTRR", 10f, "hardcore", "FPS",false));
+            DLCshowcase.Add(new DLC("Borderlands-GEN", 10f, "hardcore", "FPS", false));
+            DLCshowcase.Add(new DLC("Borderlands2-HammerLock", 10f, "hardcore", "FPS", false));
+            DLCshowcase.Add(new DLC("Borderlands-Moxxi", 10f, "hardcore", "FPS", false));
         }
 
         public bool IsValidGame(int n)
@@ -27,6 +33,15 @@ namespace GameStore
             else
                 return false;
         }
+
+        public bool IsValidDLC(int d)
+        {
+            if (d < DLCshowcase.Count && d >= 0)
+                return true;
+            else
+                return false;
+        }
+
         public void PrintShowcase()
         {
             foreach (Game g in showcase)
@@ -35,11 +50,24 @@ namespace GameStore
             }
         }
 
+        public void PrintDLCShowcase()
+        {
+            foreach (DLC d in DLCshowcase)
+            {
+                Console.WriteLine("\t [" + DLCshowcase.IndexOf(d) + "]" + d.name + "," + d.price);
+            }
+        }
+
         public void AddGame(Game game)
         {/*
             if (showcase.Count < maxGames)
                 showcase.Add(game);*/
             showcase.Add(game);
+        }
+
+        public void AddDLC(DLC dlc)
+        {
+            DLCshowcase.Add(dlc);
         }
 
         public void RemoveGameFunc(int game, User user)
@@ -58,6 +86,20 @@ namespace GameStore
                 showcase.Remove(game);
         }
 
+        public void RemoveDLCFunc(int dlc, User user)
+        {
+            RemoveDLCFunc(DLCshowcase[dlc], user);
+        }
+        public void RemoveDLCFunc(DLC dlc, User user)
+        {
+            RemoveDLC(dlc);
+        }
+        public void RemoveDLC(DLC dlc)
+        {
+            if (DLCshowcase.Contains(dlc))
+                DLCshowcase.Remove(dlc);
+        }
+
         public void Sell(int game, User user)
         {
             Sell(showcase[game], user);
@@ -74,11 +116,27 @@ namespace GameStore
             else
                 Console.WriteLine("Not Enough Money");
         }
+
+        public void SellDLC(int dlc, User user)
+        {
+            SellDLC(DLCshowcase[dlc], user);
+        }
+
+        public void SellDLC(DLC dlc, User user)
+        {
+            if (user.wallet >= dlc.price)
+            {
+                user.wallet -= user.wallet - dlc.price;
+                user.DLClibrary.Add(dlc);
+                RemoveDLC(dlc);
+            }
+        }
     }
     class User
     {
-        public float wallet = 100f;
+        public float wallet = 0f;
         public List<Game> library = new List<Game>();
+        public List<DLC> DLClibrary = new List<DLC>();
 
         public User(float walletFunds)
         {
